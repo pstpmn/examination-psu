@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+        crossorigin="anonymous"></script>
+</head>
+
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                    <li><a class="dropdown-item" href="#!">ออกจากระบบ</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="index.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        <a class="nav-link collapsed" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i>
+                            </div>
+                            ตรวจสอบข้อมูลบุคคล
+                        </a>
+
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Start Bootstrap
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">ข้อมูลส่วนบุคคล</h1>
+                    <div class="row">
+                        <div class="col-md-3 border-right">
+                            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img id='img' src=""
+                                    width="250px" height="250px"></div>
+                        </div>
+                        <div class="col-md-5 border-right">
+
+                            <div class="p-3 py-5">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="text-right">Profile</h4>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-6"><label class="labels">ชื่อ</label>
+                                        <label class="form-control" id='fname' placeholder="first name">First
+                                            Name</label>
+                                    </div>
+                                    <div class="col-md-6"><label class="labels">นามสกุล</label>
+                                        <label class="form-control" value="" id='lname' placeholder="surname">Last
+                                            Name</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">รหัสบัตรประชาชน</label><label
+                                            class="form-control" id='cardId'> </label></div>
+                                    <div class="col-md-12"><label class="labels">Passport</label>
+                                        <label class="form-control" id='passport'></label>
+                                    </div>
+                                    <div class="col-md-12"><label class="labels">เบอร์โทรศัพท์</label>
+                                        <label class="form-control" id='phoneNumber' value=""></label>
+                                    </div>
+
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6"><label class="labels">มาจากต่างประเทศ</label>
+                                        <label class="form-control" id='type'></label>
+                                    </div>
+                                    <div class="col-md-6"><label class="labels">ยานพาหนะ</label>
+                                        <label class="form-control" id='vehicle'></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 py-5">
+                                <div class="d-flex justify-content-between align-items-center experience">
+                                    <span>ข้อมูลเดินทาง</span><span class="border px-3 p-1 add-experience"><i
+                                            class="fa fa-plus"></i>&nbsp;Experience</span>
+                                </div><br>
+                                <div class="col-md-12"><label class="labels">ต้นทาง</label>
+                                    <label class="form-control" id='sAddress'></label>
+                                </div> <br>
+                                <div class="col-md-12"><label class="labels">ปลายทาง</label>
+                                    <label class="form-control" id='eAddress'></label>
+                                </div>
+                                <div class="col-md-12 mt-3"><label class="labels">วันเวลาที่บันทึก</label>
+                                    <label class="form-control" id='dateTime' value=""></label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script>
+        const getInfo = async () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const myParam = urlParams.get('id');
+
+                const cookieValue = document.cookie
+                    .split('; ').find(row => row.startsWith('token='))
+                    .split('=')[1];
+
+                const rawResponse = await fetch('http://119.59.116.193:3000/admin/info/' + myParam.toString() + '', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'token': "" + cookieValue + ""
+                    }
+                })
+                let data = await rawResponse.json();
+                document.getElementById('fname').innerHTML = data.userInfo.surName
+                document.getElementById('lname').innerHTML = data.userInfo.lastName
+                document.getElementById('phoneNumber').innerHTML = data.userInfo.phoneNumber
+                document.getElementById('type').innerHTML = data.userInfo.travelType
+                document.getElementById('vehicle').innerHTML = data.userInfo.vehicle
+                document.getElementById('cardId').innerHTML = data.userInfo.citizen_id
+                document.getElementById('passport').innerHTML = data.userInfo.passport
+                document.getElementById('sAddress').innerHTML = data.addressOrigin.subDistrict + " " + data.addressOrigin.district + " " + data.addressOrigin.province + " " + data.addressOrigin.country
+                document.getElementById('eAddress').innerHTML = data.userInfo.district + " " + data.userInfo.amphures + " " + data.userInfo.province
+                document.getElementById('dateTime').innerHTML = new Date(data.userInfo.createdAt).toLocaleString()
+                document.getElementById('img').src = "http://119.59.116.193:3000/img/cardId/" + data.userInfo.img_cardId;
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        const auth = async () => {
+            try {
+                const cookieValue = document.cookie
+                    .split('; ').find(row => row.startsWith('token='))
+                    .split('=')[1];
+                const rawResponse = await fetch('http://119.59.116.193:3000/admin/auth', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'token': "" + cookieValue + ""
+                    }
+                })
+
+                let content = await rawResponse.json();
+                if (content.status !== true) {
+                    window.location = "login.html";
+                }
+            } catch (err) {
+                window.location = "login.html";
+            }
+        }
+
+        auth()
+        getInfo()
+    </script>
+
+
+
+
+
+
+</body>
+
+</html>

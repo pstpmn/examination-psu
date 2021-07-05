@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>ตรวจสอบบุคคลเดินทางเข้าจังหวัดสงขลา</title>
+    <!--  meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        * {
+            font-family: Roboto, Arial, sans-serif;
+        }
+
+        .textbox {
+            margin: 10px;
+            border-radius: 6px;
+            background: #fff;
+            box-shadow: 0 0 8px #669999;
+        }
+
+        .banner {
+            display: flex;
+            height: 300px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: url("psu.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        img {
+            height: 200px;
+            width: 100%;
+            object-fit: scale-down;
+        }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+        const getProvinces = async (end) => {
+            try {
+                const rawResponse = await fetch('http://119.59.116.193:3000/provinces', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })
+
+                let content = await rawResponse.json();
+                let value = document.getElementById('travelType').value;
+
+                if (value === 'ต่างประเทศ') {
+                    content.data.forEach(element => {
+                        var x = document.getElementById("province-e");
+                        var option = document.createElement("option");
+                        option.text = element.name_th;
+                        option.value = element.id;
+                        x.add(option);
+                    });
+                } else {
+                    content.data.forEach(element => {
+                        var x = document.getElementById("province-en");
+                        var option = document.createElement("option");
+                        option.text = element.name_th;
+                        option.value = element.id;
+                        x.add(option);
+                    });
+
+                    content.data.forEach(element => {
+                        var x = document.getElementById("province");
+                        var option = document.createElement("option");
+                        option.text = element.name_th;
+                        option.value = element.id;
+                        x.add(option);
+                    });
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        const getAmphures = async (end) => {
+            try {
+                let id;
+                let nameDom;
+                if (end) {
+                    id = document.getElementById('province-en').value;
+                    nameDom = 'district-en';
+                } else {
+                    id = document.getElementById('province').value;
+                    nameDom = 'amphur';
+                }
+                const rawResponse = await fetch('http://119.59.116.193:3000/amphures', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provinceId: id
+                    })
+                })
+
+                let content = await rawResponse.json();
+                document.getElementById(nameDom).innerHTML = "";
+
+                var x = document.getElementById(nameDom);
+                var option = document.createElement("option");
+                option.text = '- เลือกอำเภอ -';
+                option.value = '';
+                x.add(option);
+
+                content.data.forEach(element => {
+                    var x = document.getElementById(nameDom);
+                    var option = document.createElement("option");
+                    option.text = element.name_th;
+                    option.value = element.id;
+                    x.add(option);
+                });
+
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+
+        const getDistricts = async (end) => {
+            try {
+                let id;
+                let nameDom;
+                if (end) {
+                    id = document.getElementById('district-en').value;
+                    nameDom = 'subDistrict-en';
+
+                } else {
+                    id = document.getElementById('amphur').value;
+                    nameDom = 'district';
+                }
+                const rawResponse = await fetch('http://119.59.116.193:3000/districts', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amphureId: id
+                    })
+                })
+
+                let content = await rawResponse.json();
+                document.getElementById(nameDom).innerHTML = "";
+                var x = document.getElementById(nameDom);
+                var option = document.createElement("option");
+                option.text = '- เลือกตำบล -';
+                option.value = '';
+                x.add(option);
+                content.data.forEach(element => {
+                    var x = document.getElementById(nameDom);
+                    var option = document.createElement("option");
+                    option.text = element.name_th;
+                    option.value = element.id;
+                    x.add(option);
+                });
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        // const getProvinces = async (end) => {
+        //     try {
+
+
+        //         const rawResponse = await fetch('http://127.0.0.1:3000/provinces', {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json',
+        //             }
+        //         })
+        //         let content = await rawResponse.json();
+
+        //         content.data.forEach(element => {
+        //             var x = document.getElementById("province-en");
+        //             var option = document.createElement("option");
+        //             option.text = element.name_th;
+        //             option.value = element.id;
+        //             x.add(option);
+        //         });
+        //     } catch (err) {
+        //     }
+        // }
+
+        // const getAmphures = async () => {
+        //     try {
+        //         let id = document.getElementById('province-en').value;
+        //         const rawResponse = await fetch('http://127.0.0.1:3000/amphures', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify({
+        //                 provinceId: id
+        //             })
+        //         })
+
+        //         let content = await rawResponse.json();
+        //         document.getElementById("district-en").innerHTML = "";
+        //         content.data.forEach(element => {
+        //             var x = document.getElementById("district-en");
+        //             var option = document.createElement("option");
+        //             option.text = element.name_th;
+        //             option.value = element.id;
+        //             x.add(option);
+        //         });
+
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // }
+
+        // const getDistricts = async () => {
+        //     try {
+        //         let id = document.getElementById('district-en').value;
+        //         const rawResponse = await fetch('http://127.0.0.1:3000/districts', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Accept': 'application/json',
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify({
+        //                 amphureId: id
+        //             })
+        //         })
+
+        //         let content = await rawResponse.json();
+        //         document.getElementById("subDistrict-en").innerHTML = "";
+        //         content.data.forEach(element => {
+        //             var x = document.getElementById("subDistrict-en");
+        //             var option = document.createElement("option");
+        //             option.text = element.name_th;
+        //             option.value = element.id;
+        //             x.add(option);
+        //         });
+
+        //     } catch (err) {
+        //         console.log(err);
+        //     }
+        // }
+
+        const enableTextAndDisable = async () => {
+            let type = document.getElementById('travelType').value;
+            if (type === 'ประเทศไทย') {
+                document.getElementById('displayFrom').innerHTML = ""
+                    + '<div class="item">'
+                    + '<label for="city"> ประเทศ <span>*</span></label>'
+                    + '<input class="form-control" disabled id="country-en" type="text" name="city" />'
+                    + '</div>'
+                    + '<div class="item">'
+                    + '<select class="custom-select" id="province-en" onclick="getAmphures('+"'end'"+')">'
+                    + '<option value="0">- เลือกจังหวัด -</option>'
+                    + '</select></div>'
+                    + '<div class="item" >'
+                    + '<select class="custom-select" id="district-en" onclick="getDistricts('+"'end'"+')">'
+                    + '<option value="0">- เลือกอำเภอ -</option>'
+                    + '</select></div>'
+                    + '</div>'
+                    + '<div class="item" >'
+                    + '<select class="custom-select"  id="subDistrict-en">'
+                    + '<option value="0">- เลือกตำบล -</option>'
+
+                    + '</select></div>'
+                    + ' </div>';
+
+                document.getElementById('province').disabled = false;
+                document.getElementById('amphur').disabled = false;
+                document.getElementById('district').disabled = false;
+
+                await getProvinces();
+
+            } else {
+                document.getElementById('displayFrom').innerHTML = ""
+                    + '<div class="item">'
+                    + '<label for="city"> ประเทศ <span>*</span></label>'
+                    + '<input class="form-control" disabled id="country-en" type="text" name="city" />'
+                    + '</div>'
+                    + '<div class="item">'
+                    + '<label for="city">จังหวัด<span>*</span></label>'
+                    + '<input class="form-control" id="province-en" type = "text"'
+                    + 'name = "city" />'
+                    + '</div>'
+                    + '<div class="item" >'
+                    + '<label for="city">อำเภอ <span>*</span></label>'
+                    + '<input class="form-control" id="district-en"  type="text" name= "city" />'
+                    + '</div>'
+                    + '<div class="item" >'
+                    + '<label for="city">ตำบล<span>*</span></label>'
+                    + '<input class="form-control" id="subDistrict-en" id="city" type="text" name="city" />'
+                    + ' </div>';
+
+                document.getElementById('country-en').disabled = false;
+                document.getElementById('province-en').disabled = false;
+                document.getElementById('district-en').disabled = false;
+                document.getElementById('subDistrict-en').disabled = false;
+                document.getElementById('passport').disabled = false;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <form method="post" id="myForm">
+            <div class="textbox">
+                <div class="container-fluid pt-3">
+                    <div class="banner">
+                    </div>
+                    <div class="title mt-4">
+                        <h3>ระบบตรวจสอบบุคคลเดินทางเข้า จังหวัดสงขลา</h3>
+                    </div>
+                </div>
+                <div class="container-fluid mt-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="fname">First Name / ชื่อ<span>*</span></label>
+                            <input class="form-control" id="firstName" type="text" name="firstName" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lname">Last Name / นามสกุล<span>*</span></label>
+                            <input id="lastName" class="form-control" type="text" name="lastName" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <label for="address2">มาจากต่างประเทศหรือไม่ !! <span>*</span></label>
+                            <select class="custom-select" id='travelType' name='travelType'
+                                onchange="enableTextAndDisable()">
+                                <option selected value="ประเทศไทย">ไม่ </option>
+                                <option value="ต่างประเทศ">เดินทางมาจากต่างประเทศ </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="address2">หมายเลขโทรศัพท์ / Phone Number<span>*</span></label>
+                            <input id="phoneNumber" name="phoneNumber" maxlength="10" class="form-control" type="text"
+                                name="address2" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-4 mt-4">
+                        <div class="col-md-6">
+                            <label for="address1">Citizen ID / รหัสบัตรประชาชน<span>*</span></label>
+                            <input id="citizenID" name="citizenID" maxlength="13" class="form-control" type="text"
+                                name="address1" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="address2">Passport (สำหรับเดินทางมาจากต่างประเทศ)<span>*</span></label>
+                            <input id="passport" name="passport" class="form-control" type="text" name="address2" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 mt-1">
+                            <label for="formFile" class="form-label">รูปบัตรประชาชน / ID card picture</label>
+                            <input class="form-control" type="file" name='single' id="formFile">
+                            <div class="displayImg">
+                                <br><img id="myImg" src="https://semantic-ui.com/images/wireframe/image.png"
+                                    height="200px" width="250px">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-1">
+                            <label for="address1">ยานพาหนะ / Vehicle*<span>*</span></label>
+                            <select class="custom-select" id="vehicle" name="vehicle">
+                                <option selected value="รถยนต์ส่วนบุคคล">Car / รถยนต์ส่วนบุคคล </option>
+                                <option value="จักรยานยนต์">Motorcycle / จักรยานยนต์ </option>
+                                <option value="เครื่องบิน">Airplane / เครื่องบิน </option>
+                                <option value="ทางเรือ">Ship / ทางเรือ </option>
+                                <option value="รถไฟ">Train / รถไฟ </option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 mt-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="header text-center">
+                                        <h5>Address (ปลายทาง)</h5>
+                                    </div>
+                                    <div class="item">
+                                        <label>จังหวัด<span>*</span></label>
+                                        <select class="custom-select" id="province" onclick="getAmphures()">
+                                            <option value="0">- กรุณาเลือกจังหวัด -</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="item">
+                                        <label>อำเภอ<span>*</span></label>
+                                        <select class="custom-select" id="amphur" onclick="getDistricts()">
+                                            <option value="0">- กรุณาเลือกอำเภอ -</option>
+                                        </select>
+                                    </div>
+                                    <div class="item">
+                                        <label>ตำบล<span>*</span></label>
+                                        <select class="custom-select" id="district" >
+                                            <option value="0">- กรุณาเลือกตำบล -</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 mt-2">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="header text-center">
+                                        <h5> Foreign Address / กรณีเดินทางมาจากต่างประเทศ (ต้นทาง)</h5>
+                                    </div>
+                                    <div id="displayFrom">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid text-right">
+                    <div class="displayErrors mt-5" id="displayErrors">
+
+                    </div>
+
+
+                    <input type="submit" id='btnSave' class="btn btn-success btn-lg btn-block"
+                        value="ส่งบันทึก / Save" />
+                    <br>
+                </div>
+        </form>
+
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="autoprovince/AutoProvince.js"></script>
+
+
+    <script>
+        enableTextAndDisable();
+        getProvinces();
+        // $('body').AutoProvince({
+        //     PROVINCE: '#province', // select div สำหรับรายชื่อจังหวัด
+        //     AMPHUR: '#amphur', // select div สำหรับรายชื่ออำเภอ
+        //     DISTRICT: '#district', // select div สำหรับรายชื่อตำบล
+        //     arrangeByName: false // กำหนดให้เรียงตามตัวอักษร
+        // });
+
+
+
+        window.addEventListener('load', function () {
+            document.querySelector('input[type="file"]').addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    var img = document.querySelector('img');
+                    img.onload = () => {
+                        URL.revokeObjectURL(img.src);  // no longer needed, free memory
+                    }
+                    img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+                }
+            });
+        });
+
+
+        var formEl = document.getElementById('myForm');
+
+        formEl.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var headers = new Headers();
+            const formData1 = new FormData();
+            headers['Content-Type'] = `multipart/form-data`;
+            const fileInput = document.getElementById('formFile');
+            const file = fileInput.files[0];
+            formData1.append('single', file);
+            formData1.append('firstName', document.getElementById('firstName').value);
+            formData1.append('lastName', document.getElementById('lastName').value);
+            formData1.append('travelType', document.getElementById('travelType').value);
+            formData1.append('phoneNumber', document.getElementById('phoneNumber').value);
+            formData1.append('citizenId', document.getElementById('citizenID').value);
+            formData1.append('passport', document.getElementById('passport').value);
+            formData1.append('vehicle', document.getElementById('vehicle').value);
+            formData1.append('province', document.getElementById('province').value);
+            formData1.append('amphur', document.getElementById('amphur').value);
+            formData1.append('district', document.getElementById('district').value);
+            formData1.append('country', document.getElementById('country-en').value);
+            formData1.append('provinceEn', document.getElementById('province-en').value);
+            formData1.append('districtEn', document.getElementById('subDistrict-en').value);
+            formData1.append('amphurEn', document.getElementById('district-en').value);
+            console.log(formData1.get('district'));
+            console.log(document.getElementById('district').value);
+
+            // if (document.getElementById('travelType').value !== 'ประเทศไทย') {
+            //     formData1.append('country', document.getElementById('country-en').value);
+            //     formData1.append('provinceEn', document.getElementById('province-en').value);
+            //     formData1.append('districtEn', document.getElementById('district-en').value);
+            //     formData1.append('amphurEn', document.getElementById('subDistrict-en').value);
+            // }
+            // alert(document.getElementById('travelType').value)
+
+            var url = 'http://119.59.116.193:3000/users/insert';
+            var fetchOptions = {
+                method: 'POST',
+                headers: headers,
+                body: formData1
+            };
+
+            var responsePromise = fetch(url, fetchOptions);
+            responsePromise
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (jsonData) {
+                    if (jsonData.status === false) {
+                        document.getElementById('displayErrors').innerHTML = ""
+                            + "<div class='alert alert-danger text-center' role='alert'> "
+                            + "<h4 class='alert-heading' > พบข้อผิดพลาด</h4> "
+                            + jsonData.errors
+                            + "</div >"
+                    }
+                    else if (jsonData.status === true) {
+                        document.getElementById('displayErrors').innerHTML = ""
+                            + "<div class='alert alert-success text-center' role='alert'> "
+                            + "<h4 class='alert-heading' > บันทึกสำเร็จ </h4> "
+                            + "ระบบจะทำการ Refresh ใน 5 วินาที ..."
+                            + "<br><small><a href='.'>Click Refresh Now !!</a></small>"
+                            + "</div >";
+                        document.getElementById('btnSave').disabled = true;
+                        setTimeout(() => {
+                            location.reload();
+                        }, 5000);
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        });
+
+    </script>
+    </script>
+</body>
+
+</html>
